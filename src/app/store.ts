@@ -7,5 +7,5 @@ export const store = configureStore({
     },
 });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>; // what type of our golbal state would be
+export type AppDispatch = typeof store.dispatch; // what will be our type of dispatch function

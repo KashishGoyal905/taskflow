@@ -9,7 +9,6 @@ interface User {
 
 interface AuthState {
     user: User | null;
-    isAuthenticated: boolean;
     loading: boolean,
     error: string | null,
 }
@@ -17,7 +16,6 @@ interface AuthState {
 const storedUser = localStorage.getItem("user");
 const initialState: AuthState = {
     user: storedUser ? JSON.parse(storedUser) : null,
-    isAuthenticated: storedUser ? true : false,
     loading: false,
     error: null,
 }
@@ -29,13 +27,11 @@ const authSlice = createSlice({
         login: (state, action: PayloadAction<User>) => {
             console.log("insode login function");
             state.user = action.payload;
-            state.isAuthenticated = true;
             state.loading = false;
             localStorage.setItem("user", JSON.stringify(action.payload));
         },
         logout: (state) => {
             state.user = null;
-            state.isAuthenticated = false;
             localStorage.removeItem("user");
         }
     }
