@@ -3,9 +3,11 @@ import type { Role } from "../types/auth";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../app/store";
 import { login } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const handleLogin = (role: Role) => {
     console.log("Login clicked");
@@ -16,6 +18,12 @@ export default function Login() {
         role,
       }),
     );
+
+    if (role === "admin") {
+      navigate("/admin");
+    } else {
+      navigate("/");
+    }
   };
 
   return (
