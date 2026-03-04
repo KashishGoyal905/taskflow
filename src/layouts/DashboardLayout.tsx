@@ -10,9 +10,11 @@ import {
   Typography,
 } from "@mui/material";
 import { navigation } from "../routes/navigation";
-import { NavLink, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
-import type { RootState } from "../app/store";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../app/store";
+import { logout } from "../features/auth/authSlice";
+import { red } from "@mui/material/colors";
 
 const drawerWidth = 240;
 // interface DashboardLayoutProps {
@@ -21,6 +23,13 @@ const drawerWidth = 240;
 
 export default function DashboardLayout() {
   const userRole = useSelector((state: RootState) => state.auth.user?.role);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -29,11 +38,31 @@ export default function DashboardLayout() {
       {/* Navbar */}
       <AppBar
         position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
+        sx={{
+          width: `calc(100% - ${drawerWidth}px)`,
+          ml: `${drawerWidth}px`,
+          display: "flex",
+          justifyContent: "space-between",
+          flexDirection: "row",
+        }}
       >
         <Toolbar>
           <Typography variant="h6" noWrap>
             TaskFlow Pro
+          </Typography>
+        </Toolbar>
+        <Toolbar>
+          <Typography variant="h6" noWrap>
+            <button
+              style={{
+                color: "red",
+                backgroundColor: "transparent",
+                border: "none",
+              }}
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
           </Typography>
         </Toolbar>
       </AppBar>
