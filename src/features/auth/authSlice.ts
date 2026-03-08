@@ -37,5 +37,5 @@ const authSlice = createSlice({
     }
 });
 
-export const { login, logout } = authSlice.actions;
-export default authSlice.reducer;
+export const { login, logout } = authSlice.actions; // authSlice.actions automatically crated by rtk.
+export default authSlice.reducer; // this whole slice
