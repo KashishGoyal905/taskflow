@@ -28,7 +28,6 @@ export default function Login() {
       } else {
         navigate("/", { replace: true });
       }
-      
     },
     onError: (error) => {
       console.error(error);
