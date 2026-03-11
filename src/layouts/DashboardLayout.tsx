@@ -3,6 +3,7 @@ import {
   Box,
   CssBaseline,
   Drawer,
+  IconButton,
   List,
   ListItemButton,
   ListItemText,
@@ -14,7 +15,9 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../app/store";
 import { logout } from "../features/auth/authSlice";
-import { red } from "@mui/material/colors";
+import { useContext } from "react";
+import { ColorModeContext } from "../app/ThemeContext";
+// import "remixicon/fonts/remixicon.css";
 
 const drawerWidth = 240;
 // interface DashboardLayoutProps {
@@ -30,6 +33,8 @@ export default function DashboardLayout() {
     dispatch(logout());
     navigate("/");
   };
+
+  const colorMode = useContext(ColorModeContext);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -53,6 +58,9 @@ export default function DashboardLayout() {
         </Toolbar>
         <Toolbar>
           <Typography variant="h6" noWrap>
+            <IconButton onClick={colorMode.toggleColorMode}>
+              <i className="ri-moon-line"></i>
+            </IconButton>
             <button
               style={{
                 color: "red",
