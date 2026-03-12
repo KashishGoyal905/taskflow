@@ -1,29 +1,10 @@
 import { createTheme } from "@mui/material/styles";
 
-export const theme = createTheme({
+export const getTheme = (mode: "light" | "dark") => createTheme({
     palette: {
-        mode: "light",
+        mode,
         primary: {
-            main: "#2563eb", // blue-600 style
+            main: "#1976d2",
         },
-        secondary: {
-            main: "#7c3aed", // violet
-        },
-        background: {
-            default: "#f9fafb",
-            paper: "#ffffff",
-        },
-    },
-    typography: {
-        fontFamily: "Inter, sans-serif",
-        h4: {
-            fontWeight: 600,
-        },
-        button: {
-            textTransform: "none",
-        },
-    },
-    shape: {
-        borderRadius: 8,
-    },
+    }
 });
