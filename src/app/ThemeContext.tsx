@@ -2,6 +2,7 @@ import { ThemeProvider } from "@emotion/react";
 import { createContext, useMemo, useState } from "react";
 import { getTheme } from "./theme";
 
+// to export toggle function to all components.
 export const ColorModeContext = createContext({
   toggleColorMode: () => {},
 });
@@ -11,6 +12,7 @@ export const ThemeContextProvider = ({ children }: any) => {
     () => (localStorage.getItem("theme") as "light" | "dark") || "light",
   );
 
+  //   function to toggle theme.
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
@@ -24,10 +26,13 @@ export const ThemeContextProvider = ({ children }: any) => {
     [],
   );
 
+  // To get the theme(colors and all)
   const theme = useMemo(() => getTheme(mode), [mode]);
 
   return (
+    // To provide the toggeleColorMode function.
     <ColorModeContext.Provider value={colorMode}>
+      {/* the theme provided here will be set on the UI */}
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </ColorModeContext.Provider>
   );

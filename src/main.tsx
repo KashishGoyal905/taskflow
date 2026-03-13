@@ -11,11 +11,11 @@ import { ThemeContextProvider } from "./app/ThemeContext.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeContextProvider>
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-    </Provider>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
+      </Provider>
     </ThemeContextProvider>
   </StrictMode>,
 );
