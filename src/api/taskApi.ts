@@ -31,3 +31,23 @@ export const createTask = async (title: string): Promise<Task> => {
         }, 1000)
     })
 }
+
+export const toggleTaskApi = async (taskId: string): Promise<Task[]> => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const newTasks = fakeTasks.map((task) => task.id === taskId ? { ...task, completed: !task.completed } : task);
+
+            fakeTasks = newTasks;
+            resolve(fakeTasks);
+        }, 1000);
+    });
+}
+
+export const deleteTaskApi = async (taskId: string) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            fakeTasks = fakeTasks.filter((task) => task.id !== taskId);
+            resolve(fakeTasks);
+        }, 1000);
+    });
+}
