@@ -8,6 +8,7 @@ import {
   type Task,
 } from "../api/taskApi";
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
@@ -15,6 +16,8 @@ import {
   List,
   ListItem,
   ListItemText,
+  Skeleton,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
@@ -59,6 +62,10 @@ export default function Tasks() {
     // if we face any error in the server, rollback
     onError: (err, title, context) => {
       queryClient.setQueryData(["tasks"], context?.previousTasks);
+    },
+
+    onSuccess: () => {
+      setSnackbarOpen(true);
     },
 
     // whether success or faliure. from this we can update the cache with server data(though it will same)
@@ -127,10 +134,49 @@ export default function Tasks() {
     mutation.mutate(title);
   }
 
-  if (isLoading) return <CircularProgress />;
-  if (isError) {
-    return <Typography color="error">Error loading tasks</Typography>;
+  if (isLoading) {
+    return (
+      <Box sx={{ p: 4, position: "relative" }}>
+        <Skeleton
+          height={60}
+          width={100}
+          sx={{ position: "absolute", top: "0px", left: "130px" }}
+        />
+        <Skeleton height={100} width={300} />
+        <Skeleton height={50} />
+        <Skeleton height={50} />
+        <Skeleton height={50} />
+      </Box>
+    );
   }
+
+  if (isError) {
+    return (
+      <Box sx={{ p: 4 }}>
+        <Typography color="error" gutterBottom>
+          Failed to load tasks
+        </Typography>
+
+        <Button
+          variant="contained"
+          onClick={() => queryClient.invalidateQueries({ queryKey: ["tasks"] })}
+        >
+          Retry
+        </Button>
+      </Box>
+    );
+  }
+
+  if (data?.length === 0) {
+    return (
+      <Box sx={{ p: 4 }}>
+        <Typography>No tasks yet.</Typography>
+      </Box>
+    );
+  }
+
+  // for snackbar
+  const [snackbar, setSnackbarOpen] = useState(false);
 
   return (
     <Box sx={{ p: 4 }}>
@@ -174,6 +220,14 @@ export default function Tasks() {
           </ListItem>
         ))}
       </List>
+      <Snackbar
+        open={snackbar}
+        anchorOrigin={{vertical: "top", horizontal:"center" }}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+      >
+        <Alert severity="success">Task created successfully</Alert>
+      </Snackbar>
     </Box>
   );
 }
