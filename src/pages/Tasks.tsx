@@ -29,10 +29,20 @@ export default function Tasks() {
   const [title, setTitle] = useState("");
 
   const user = useSelector((state: RootState) => state.auth.user);
+  // for snackbar
+  const [snackbar, setSnackbarOpen] = useState(false);
 
+  // for filter
+  const [filter, setFilter] = useState<"all" | "completed" | "pending">("all");
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["tasks"],
+    queryKey: ["tasks", filter],
     queryFn: fetchTasks,
+  });
+
+  const filterData = data?.filter((task) => {
+    if (filter === "completed") return task.completed;
+    if (filter === "pending") return !task.completed;
+    return true;
   });
 
   const mutation = useMutation({
@@ -143,6 +153,11 @@ export default function Tasks() {
           sx={{ position: "absolute", top: "0px", left: "130px" }}
         />
         <Skeleton height={100} width={300} />
+        <Box sx={{ display: "flex", gap: 2, justifyContent: "center" }}>
+          <Skeleton height={50} width={80} />
+          <Skeleton height={50} width={80} />
+          <Skeleton height={50} width={80} />
+        </Box>
         <Skeleton height={50} />
         <Skeleton height={50} />
         <Skeleton height={50} />
@@ -175,9 +190,6 @@ export default function Tasks() {
     );
   }
 
-  // for snackbar
-  const [snackbar, setSnackbarOpen] = useState(false);
-
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -199,8 +211,14 @@ export default function Tasks() {
         </Button>
       </Box>
 
+      <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
+        <Button onClick={() => setFilter("all")}>All</Button>
+        <Button onClick={() => setFilter("completed")}>Completed</Button>
+        <Button onClick={() => setFilter("pending")}>Pending</Button>
+      </Box>
+
       <List>
-        {data?.map((task) => (
+        {filterData?.map((task) => (
           <ListItem key={task.id}>
             <ListItemText>{task.title}</ListItemText>
             <ListItemText>{task.id}</ListItemText>
@@ -222,7 +240,7 @@ export default function Tasks() {
       </List>
       <Snackbar
         open={snackbar}
-        anchorOrigin={{vertical: "top", horizontal:"center" }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
         autoHideDuration={3000}
         onClose={() => setSnackbarOpen(false)}
       >
