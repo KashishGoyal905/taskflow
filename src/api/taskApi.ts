@@ -7,19 +7,29 @@ export type Task = {
 let fakeTasks: Task[] = [
     { id: "1", title: "Learn Tanstack", completed: false },
     { id: "2", title: "Build RBAC", completed: true },
+    { id: "3", title: "Learn Tanstack", completed: true },
+    { id: "4", title: "Build RBAC", completed: true },
+    { id: "5", title: "Learn Tanstack", completed: false },
+    { id: "6", title: "Build RBAC", completed: true },
+    { id: "7", title: "Learn Tanstack", completed: true },
+    { id: "8", title: "Build RBAC", completed: false },
 ]
 
-export const fetchTasks = async (filterQuery: string): Promise<Task[]> => {
+export const fetchTasks = async (filterQuery: string, page: number, limit: number = 3): Promise<Task[]> => {
     return new Promise((resolve) => {
         setTimeout(() => {
+            let filtered = [...fakeTasks];
             if (filterQuery == "completed") {
-                resolve(fakeTasks.filter(t => t.completed));
+                filtered = fakeTasks.filter(t => t.completed);
             }
             if (filterQuery == "pending") {
-                resolve(fakeTasks.filter(t => !t.completed));
-            } else {
-                resolve([...fakeTasks])
+                filtered = fakeTasks.filter(t => !t.completed);
             }
+
+            let start = (page - 1) * limit;
+            let end = start + limit;
+
+            resolve(filtered.slice(start, end));
         }, 1000);
     })
 }
