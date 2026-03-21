@@ -9,10 +9,17 @@ let fakeTasks: Task[] = [
     { id: "2", title: "Build RBAC", completed: true },
 ]
 
-export const fetchTasks = async (): Promise<Task[]> => {
+export const fetchTasks = async (filterQuery: string): Promise<Task[]> => {
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve([...fakeTasks])
+            if (filterQuery == "completed") {
+                resolve(fakeTasks.filter(t => t.completed));
+            }
+            if (filterQuery == "pending") {
+                resolve(fakeTasks.filter(t => !t.completed));
+            } else {
+                resolve([...fakeTasks])
+            }
         }, 1000);
     })
 }
