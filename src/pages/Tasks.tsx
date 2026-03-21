@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createTask,
   deleteTaskApi,
@@ -32,12 +32,21 @@ export default function Tasks() {
   // for snackbar
   const [snackbar, setSnackbarOpen] = useState(false);
 
+  // For pagination
+  const [page, setPage] = useState(1);
+  const limit = 3;
+
   // for filter
   const [filter, setFilter] = useState<"all" | "completed" | "pending">("all");
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["tasks", filter],
-    queryFn: () => fetchTasks(filter),
+    queryKey: ["tasks", filter, page],
+    queryFn: () => fetchTasks(filter, page, limit),
+    placeholderData: (prev) => prev,
   });
+
+  useEffect(() => {
+    setPage(1);
+  }, [filter]);
 
   const mutation = useMutation({
     mutationFn: createTask,
@@ -176,6 +185,10 @@ export default function Tasks() {
     );
   }
 
+  if (!isLoading && data?.length === 0 && page > 1) {
+    setPage((p) => p - 1);
+  }
+
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -229,6 +242,21 @@ export default function Tasks() {
           </ListItem>
         ))}
       </List>
+      <Box
+        sx={{ display: "flex", gap: 2, mt: 2, justifyContent: "space-between" }}
+      >
+        <Button
+          variant="contained"
+          disabled={page === 1}
+          onClick={() => setPage((p) => p - 1)}
+        >
+          Previous
+        </Button>
+        <Button variant="contained" onClick={() => setPage((p) => p + 1)}>
+          Next
+        </Button>
+      </Box>
+
       <Snackbar
         open={snackbar}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
