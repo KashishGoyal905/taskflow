@@ -36,13 +36,7 @@ export default function Tasks() {
   const [filter, setFilter] = useState<"all" | "completed" | "pending">("all");
   const { data, isLoading, isError } = useQuery({
     queryKey: ["tasks", filter],
-    queryFn: fetchTasks,
-  });
-
-  const filterData = data?.filter((task) => {
-    if (filter === "completed") return task.completed;
-    if (filter === "pending") return !task.completed;
-    return true;
+    queryFn: () => fetchTasks(filter),
   });
 
   const mutation = useMutation({
@@ -182,20 +176,11 @@ export default function Tasks() {
     );
   }
 
-  if (data?.length === 0) {
-    return (
-      <Box sx={{ p: 4 }}>
-        <Typography>No tasks yet.</Typography>
-      </Box>
-    );
-  }
-
   return (
     <Box sx={{ p: 4 }}>
       <Typography variant="h4" gutterBottom>
         Tasks
       </Typography>
-
       <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
         <TextField
           label="New Task"
@@ -216,9 +201,15 @@ export default function Tasks() {
         <Button onClick={() => setFilter("completed")}>Completed</Button>
         <Button onClick={() => setFilter("pending")}>Pending</Button>
       </Box>
-
       <List>
-        {filterData?.map((task) => (
+        {data?.length == 0 ? (
+          <Box sx={{ p: 4 }}>
+            <Typography>No {`${filter}`} tasks yet.</Typography>
+          </Box>
+        ) : (
+          ""
+        )}
+        {data?.map((task) => (
           <ListItem key={task.id}>
             <ListItemText>{task.title}</ListItemText>
             <ListItemText>{task.id}</ListItemText>
