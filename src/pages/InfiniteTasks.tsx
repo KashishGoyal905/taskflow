@@ -47,8 +47,10 @@ export default function InfiniteTasks() {
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ["tasks", filter],
+    // it automatically sends the next page request when you click load more.
     queryFn: ({ pageParam = 1 }) => fetchTasks(filter, pageParam, 3),
     initialPageParam: 1,
+    // to get the next page.
     getNextPageParam: (lastPage, allPages) => {
       if (lastPage.length === 0) return undefined;
 
@@ -193,6 +195,7 @@ export default function InfiniteTasks() {
     );
   }
 
+  //  [ [page1 data], [page2 data] ] ⇒ [page1 data, page2 data]
   const tasks = data?.pages.flat() ?? [];
   return (
     <Box sx={{ p: 4 }}>
