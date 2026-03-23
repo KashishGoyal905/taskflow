@@ -13,6 +13,14 @@ let fakeTasks: Task[] = [
     { id: "6", title: "Build RBAC", completed: true },
     { id: "7", title: "Learn Tanstack", completed: true },
     { id: "8", title: "Build RBAC", completed: false },
+    { id: "9", title: "Learn Tanstack", completed: false },
+    { id: "10", title: "Build RBAC", completed: true },
+    { id: "11", title: "Learn Tanstack", completed: true },
+    { id: "12", title: "Build RBAC", completed: true },
+    { id: "13", title: "Learn Tanstack", completed: false },
+    { id: "14", title: "Build RBAC", completed: true },
+    { id: "15", title: "Learn Tanstack", completed: true },
+    { id: "16", title: "Build RBAC", completed: false },
 ]
 
 export const fetchTasks = async (filterQuery: string, page: number, limit: number = 3): Promise<Task[]> => {
@@ -33,6 +41,22 @@ export const fetchTasks = async (filterQuery: string, page: number, limit: numbe
         }, 1000);
     })
 }
+
+// export const fetchTasks = async (filterQuery: string, page: number, limit: number = 3): Promise<Task[]> => {
+//     return new Promise((resolve) => {
+//         setTimeout(() => {
+//             let filtered = [...fakeTasks];
+//             if (filterQuery == "completed") {
+//                 filtered = fakeTasks.filter(t => t.completed);
+//             }
+//             if (filterQuery == "pending") {
+//                 filtered = fakeTasks.filter(t => !t.completed);
+//             }
+
+//             resolve(filtered);
+//         }, 1000);
+//     })
+// }
 
 export const createTask = async (title: string): Promise<Task> => {
     return new Promise((resolve) => {

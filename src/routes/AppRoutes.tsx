@@ -6,6 +6,7 @@ import Admin from "../pages/Admin";
 import Login from "../pages/Login";
 import ProtectedRoutes from "./ProtectedRoutes";
 import Unauthorized from "../pages/Unauthorized";
+import InfiniteTasks from "../pages/InfiniteTasks";
 
 export default function AppRoutes() {
   return (
@@ -16,6 +17,7 @@ export default function AppRoutes() {
         <Route element={<DashboardLayout />}>
           <Route path="/" element={<DashBoard />} />
           <Route path="/tasks" element={<Tasks />} />
+          <Route path="/infiniteTasks" element={<InfiniteTasks />} />
         </Route>
       </Route>
 

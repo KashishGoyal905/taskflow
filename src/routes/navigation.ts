@@ -18,6 +18,11 @@ export const navigation: NavigationProps[] = [
         roles: ["admin", "member"],
     },
     {
+        label: "Infinte Tasks",
+        path: "/infiniteTasks",
+        roles: ["admin", "member"],
+    },
+    {
         label: "Admin Panel",
         path: "/admin",
         roles: ["admin"],
